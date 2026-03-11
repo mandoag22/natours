@@ -1,0 +1,28 @@
+# Environment variables
+config.env
+
+# Dependencies
+node_modules/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*..log*
+
+# Buildlog
+npm-debug output
+public/js/bundle.js
+public/js/bundle.js.map
+
+# Coverage
+coverage/
+.nyc_output/
+
