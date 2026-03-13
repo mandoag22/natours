@@ -1,44 +1,22 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
-// Suppress MongoDB driver deprecation warning
-process.removeAllListeners('warning');
-process.on('warning', warning => {
-  if (
-    warning.name === 'DeprecationWarning' &&
-    warning.message.includes('MongoDB')
-  ) {
-    return;
-  }
-});
-
-process.on('uncaughtException', err => {
-  console.log('UNCAUGHT EXCEPTION! 💥 Shutting down...');
-  console.log(err.name, err.message);
-  process.exit(1);
-});
-
 dotenv.config({ path: './config.env' });
 const app = require('./app');
 
-const getDBUri = () => {
-  if (process.env.NODE_ENV === 'production') {
-    if (!process.env.DATABASE || !process.env.DATABASE_PASSWORD) {
-      throw new Error(
-        'DATABASE and DATABASE_PASSWORD env vars required in production'
-      );
-    }
-    return process.env.DATABASE.replace(
-      /<PASSWORD>/g,
-      encodeURIComponent(process.env.DATABASE_PASSWORD)
-    );
-  }
-  return process.env.DATABASE_LOCAL || 'mongodb://localhost:27017/natours';
-};
+// Define your MongoDB connection URI (use environment variables for security in production)
 
-const DB = getDBUri();
+//MongoDB configuration
+const { DATABASE } = process.env;
 
-mongoose.connect(DB).then(() => console.log('DB connection successful!'));
+mongoose.connect(DATABASE);
+const conn = mongoose.connection;
+conn.once('open', () => {
+  console.log('Succesfully connected to database');
+});
+conn.on('error', () => {
+  console.log('error to connect to database');
+});
 
 const port = process.env.PORT || 3000;
 const server = app.listen(port, () => {
