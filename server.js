@@ -24,8 +24,8 @@ const app = require('./app');
 const DB =
   process.env.NODE_ENV === 'production'
     ? process.env.DATABASE.replace(
-        '<PASSWORD>',
-        encodeURIComponent(process.env.DATABASE_PASSWORD)
+        /<PASSWORD>/g,
+        encodeURIComponent(process.env.DATABASE_PASSWORD || '')
       )
     : process.env.DATABASE_LOCAL || 'mongodb://localhost:27017/natours';
 
