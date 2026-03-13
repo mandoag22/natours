@@ -27,7 +27,7 @@ const DB =
         '<PASSWORD>',
         encodeURIComponent(process.env.DATABASE_PASSWORD)
       )
-    : process.env.DATABASE_LOCAL;
+    : process.env.DATABASE_LOCAL || 'mongodb://localhost:27017/natours';
 
 mongoose.connect(DB).then(() => console.log('DB connection successful!'));
 
