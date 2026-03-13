@@ -38,7 +38,9 @@ if (process.env.NODE_ENV === 'development') {
 const limiter = rateLimit({
   max: 100,
   windowMs: 60 * 60 * 1000,
-  message: 'Too many requests from this IP, please try again in an hour!'
+  message: 'Too many requests from this IP, please try again in an hour!',
+  standardHeaders: true,
+  legacyHeaders: false
 });
 app.use('/api', limiter);
 
@@ -72,6 +74,13 @@ app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
   res.locals.stripePubKey = process.env.STRIPE_PUBLISHABLE_KEY;
   // console.log(req.cookies);
+  // Enable CORS for login preflight
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
   next();
 });
 
