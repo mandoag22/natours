@@ -19,8 +19,8 @@ Thumbs.db
 
 # Buildlog
 npm-debug output
-public/js/bundle.js
-public/js/bundle.js.map
+# public/js/bundle.js
+# public/js/bundle.js.map
 
 # Coverage
 coverage/
